@@ -1,15 +1,15 @@
 const responseForError = (
   res,
-  { status = 500, message = "something went wrong" }
+  { statusCode = 500, message = "something went wrong" }
 ) => {
-  return res.status(status).json({ pass: false, message: message });
+  return res.status(statusCode).json({ pass: false, message: message });
 };
 
 const responseForSuccess = (
   res,
-  { status = 200, message = "all ok", payload = {} }
+  { statusCode = 200, message = "all ok", payload = {} }
 ) => {
-  return res.status(status).json({ pass: true, message: message, payload });
+  return res.status(statusCode).json({ pass: true, message: message, payload });
 };
 
-module.exporsts = { responseForError, responseForSuccess };
+module.exports = { responseForError, responseForSuccess };

@@ -1,8 +1,11 @@
 const express = require("express");
 const userRouter = express.Router();
-const { getAllUsers } = require("../controllers/users.controller");
+const {
+  getAllUsers,
+  gettingASingleUser,
+} = require("../controllers/users.controller");
 
-//! using isLoggedin middleware
 userRouter.get("/", getAllUsers);
+userRouter.get("/:id", gettingASingleUser);
 
 module.exports = userRouter;
