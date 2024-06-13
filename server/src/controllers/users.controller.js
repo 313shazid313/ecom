@@ -1,11 +1,9 @@
-//packages
-
-
+// packages
 
 // files
 const UserModelSchema = require("../model/users.model");
 const { responseForSuccess } = require("../controllers/res.controller");
-const { findUserById } = require("../services/find.user.by.id");
+const { findsomethingById } = require("../services/finding.an.item");
 
 // controllers logic
 
@@ -74,8 +72,8 @@ const getAllUsers = async (req, res, next) => {
 const gettingASingleUser = async (req, res, next) => {
   try {
     const userId = req.params.id;
-
-    const anUser = await findUserById(userId);
+    const removedOption = { password: 0 };
+    const anUser = await findsomethingById(userId, removedOption);
 
     return responseForSuccess(res, {
       statusCode: 200,
@@ -89,4 +87,22 @@ const gettingASingleUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllUsers, gettingASingleUser };
+
+const deletingASingleUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const removedOption = { password: 0 };
+    const anUser = await findsomethingById(userId, removedOption);
+
+    return responseForSuccess(res, {
+      statusCode: 200,
+      message: "User is getting successfully",
+      payload: { anUser },
+    });
+  } catch (error) {
+    // for handeling any mongoose error
+
+    next(error);
+  }
+};
+module.exports = { getAllUsers, gettingASingleUser,deletingASingleUser };

@@ -5,11 +5,11 @@ const mongoose = require("mongoose");
 //imports
 const UserModelSchema = require("../model/users.model");
 
-//logics
-const findUserById = async (userId) => {
+//logics for find an item,product,user from database
+const findsomethingById = async (userId, removeAnOption = {}) => {
   try {
-    const removeAnOption = { password: 0 };
-    const item = await UserModelSchema.findById(userId, removeAnOption);
+    // const removeAnOption = { password: 0 };
+    const item = await UserModelSchema.findsomethingById(userId, removeAnOption);
 
     // if data does not found
     if (!item) {
@@ -27,5 +27,6 @@ const findUserById = async (userId) => {
     throw error;
   }
 };
+//logics for deleting an item,product,user from database
 
-module.exports = { findUserById };
+module.exports = { findsomethingById };
