@@ -16,6 +16,7 @@
     "express": "^4.19.2",
     "express-rate-limit": "^7.2.0",
     "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.2",
     "mongoose": "^8.4.0",
     "xss-clean": "^0.1.4"

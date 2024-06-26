@@ -1,9 +1,9 @@
 // packages
-
+const createError = require("http-errors");
 // files
 const UserModelSchema = require("../model/users.model");
 const { responseForSuccess } = require("../controllers/res.controller");
-const { findsomethingById } = require("../services/finding.an.item");
+const { findsomethingWithId } = require("../services/finding.an.item");
 
 // controllers logic
 
@@ -73,7 +73,11 @@ const gettingASingleUser = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const removedOption = { password: 0 };
-    const anUser = await findsomethingById(userId, removedOption);
+    const anUser = await findsomethingWithId(
+      UserModelSchema,
+      userId,
+      removedOption
+    );
 
     return responseForSuccess(res, {
       statusCode: 200,
@@ -87,22 +91,47 @@ const gettingASingleUser = async (req, res, next) => {
   }
 };
 
-
+//deleting an user
 const deletingASingleUser = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const removedOption = { password: 0 };
-    const anUser = await findsomethingById(userId, removedOption);
+    const id = req.params.id;
+    await UserModelSchema.findByIdAndDelete({
+      _id: id,
+      isAdmin: false,
+    });
 
     return responseForSuccess(res, {
       statusCode: 200,
-      message: "User is getting successfully",
-      payload: { anUser },
+      message: "User is deleated successfully",
     });
   } catch (error) {
     // for handeling any mongoose error
-
     next(error);
   }
 };
-module.exports = { getAllUsers, gettingASingleUser,deletingASingleUser };
+
+const registerUser = async (req, res, next) => {
+  try {
+    const { name, email, password, address, phone } = req.body;
+
+    const ifUserExistOnDB = await UserModelSchema.exists({ email: email });
+
+    if (ifUserExistOnDB) {
+      throw createError(409, "User email already exist on database");
+    }
+
+    return responseForSuccess(res, {
+      statusCode: 201,
+      message: "User Created Successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  gettingASingleUser,
+  deletingASingleUser,
+  registerUser,
+};
